@@ -43,7 +43,8 @@ if (!empty($getAction)) {
                             'code' => $productCode,
                             'quantity' => $postQuantity,
                             'price' => $product["price"],
-                            'image' => $product["image"]
+                            'image' => $product["image"],
+                            'discount_percentage' => $product['discount']
                         )
                     );
 
@@ -85,7 +86,7 @@ include('header.php');
 		<div class="col-md-8">
 		  <div class="card">
 			  <div class="card-header">
-			      <div class="card-title"><?php echo ($search ? 'Results' : 'Products'); ?></div>
+			      <div class="card-title"><i class="fas fa-list"></i> <?php echo ($search ? 'Results' : 'Products'); ?></div>
 			  </div>
 		      <div class="card-body">
 			      <table id="product-grid" class="table table-bordered table-hover">
@@ -132,7 +133,7 @@ include('header.php');
 		  <div class="card">
 		    <div class="card-header">
 		        <div class="card-title">
-		            Shopping Cart
+		            <i class="fas fa-shopping-cart"></i> Shopping Cart
 		        </div>
 		        <div class="card-tools">
 		            <a class="btn btn-danger" href="index.php?action=empty"><i class="fas fa-trash"></i> Empty Cart</a>
@@ -145,6 +146,7 @@ include('header.php');
 				    if (isset($_SESSION["cart_item"])) {
 				        $total_quantity = 0;
 				        $total_price = 0;
+				        $discounted_total = $globalC->calculateDiscountedTotal($_SESSION["cart_item"]);
 				    ?>
 				        <table id="cart" class="table table-hover">
 				            <thead>
@@ -216,6 +218,56 @@ include('header.php');
 					</div>
 				</div>
 			</form>
+		  </div>
+		</div>
+
+		<div class="col-md-8">
+		  <div class="card">
+			  <div class="card-header">
+			      <div class="card-title"><i class="fas fa-star"></i> Top Selling Products</div>
+			  </div>
+		      <div class="card-body">
+			      <table id="product-grid" class="table table-bordered table-hover">
+			          <thead>
+			              <tr>
+			                  <th>Image</th>
+			                  <th>Product Name</th>
+			                  <th>Price</th>
+			                  <th>Quantity</th>
+			              </tr>
+			          </thead>
+			          <tbody>
+			              <?php
+			              $orders = $globalC->getAllOrders();
+						  $products = $globalC->getAllProducts();
+
+						  $N = 5;
+						  $topSellingProducts = $globalC->getTopSellingProducts($orders, $products, $N);
+			              if (!empty($product_array)) {
+			                  foreach ($product_array as $product) {
+			              ?>
+			                      <tr>
+			                          <td>
+			                              <img src="<?php echo $product["image"]; ?>" class="cart-item-image" />
+			                          </td>
+			                          <td><?php echo $product["product_name"]; ?></td>
+			                          <td><?php echo "$" . $product["price"]; ?></td>
+			                          <td>
+			                              <form method="post" action="index.php?action=add&code=<?php echo $product["code"]; ?>">
+											  <div class="input-group">
+				                                  <input type="number" class="form-control product-quantity" name="quantity" value="1" size="2" required/>
+				                                  <button type="submit" class="btn btn-primary btnAddAction"><i class="fas fa-plus"></i> Add to cart</button>
+				                              </div>
+			                              </form>
+			                          </td>
+			                      </tr>
+			              <?php
+			                  }
+			              }
+			              ?>
+			          </tbody>
+			      </table>
+		      </div>
 		  </div>
 		</div>
 
