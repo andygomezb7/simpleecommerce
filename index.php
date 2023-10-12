@@ -44,7 +44,7 @@ if (!empty($getAction)) {
                             'quantity' => $postQuantity,
                             'price' => $product["price"],
                             'image' => $product["image"],
-                            'discount_percentage' => $product['discount']
+                            'discount' => $product['discount']
                         )
                     );
 
@@ -146,7 +146,7 @@ include('header.php');
 				    if (isset($_SESSION["cart_item"])) {
 				        $total_quantity = 0;
 				        $total_price = 0;
-				        $discounted_total = $globalC->calculateDiscountedTotal($_SESSION["cart_item"]);
+	                    $discounted_total = $globalC->calculateDiscountedTotal($_SESSION["cart_item"]);
 				    ?>
 				        <table id="cart" class="table table-hover">
 				            <thead>
@@ -189,9 +189,14 @@ include('header.php');
 				                }
 				                ?>
 				                <tr>
+				                    <td colspan="2" class="text-right">Discount total:</td>
+				                    <td class="text-right" colspan="2"><strong><?php echo "$ " . number_format($total_price - $discounted_total, 2); ?></strong></td>
+				                    <td></td>
+				                </tr>
+				                <tr>
 				                    <td colspan="1" class="text-right">Total:</td>
 				                    <td class="text-right"><?php echo $total_quantity; ?></td>
-				                    <td class="text-right" colspan="2"><strong><?php echo "$ " . number_format($total_price, 2); ?></strong></td>
+				                    <td class="text-right" colspan="2"><strong><?php echo "$ " . number_format($discounted_total, 2); ?></strong></td>
 				                    <td></td>
 				                </tr>
 				            </tbody>

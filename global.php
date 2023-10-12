@@ -74,7 +74,7 @@ class GlobalClass
 	    
 	    foreach ($cart as $item) {
 	        $price = $item['price'];
-	        $discountPercentage = $item['discount_percentage'];
+	        $discountPercentage = intval(@$item['discount']);
 	        $quantity = $item['quantity'];
 	        
 	        $discountedPrice = $price - ($price * ($discountPercentage / 100));
