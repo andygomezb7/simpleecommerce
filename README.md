@@ -1,3 +1,7 @@
+## Practical Excersie
+***
+
+![image](https://github.com/andygomezb7/simpleecommerce/assets/9289785/02e11ca6-a288-44cf-a80f-968781f326c9)
 
 
 ## API Integration
